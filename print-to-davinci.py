@@ -45,10 +45,14 @@ with open(sys.argv[2], 'rb') as fin:
     gcode.append(0x00);
     gcode.append(0xB9); # some sort of checksum? how to calculate this?
     gcode.append('.');
-    gcode = "M1:MyTest,711,0.3.16,EE1_OK,EE2_OK" + gcode
-    print ' '.join(x.encode('hex') for x in str(gcode))
+    m1_gcode = "M1:MyTest,711,0.3.16,EE1_OK,EE2_OK" + gcode
+    print ' '.join(x.encode('hex') for x in str(m1_gcode))
+    
+    ser.write("M1:MyTest,711,0.3.16,EE1_OK,EE2_OK")
+    ser.flush()
     ser.write(gcode)
-printOutputIfAvailable()
+    ser.flush()
+    printOutputIfAvailable()
 
 # while(True):
 #   printOutputIfAvailable()

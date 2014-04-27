@@ -1,4 +1,5 @@
 ; filename = composition.3w
+; print_time = 196;
 ; machine = daVinciF10
 ; material = abs
 ; layer_height = 0.2
