@@ -9,7 +9,8 @@ ser = serial.Serial(
 )
 ser.isOpen()
 
-
+def toHexString(text):
+  return ' '.join(x.encode('hex') for x in str(text))
 
 def printOutputIfAvailable():
   time.sleep(1) # wait one second before attempting to read response
@@ -17,7 +18,8 @@ def printOutputIfAvailable():
   while ser.inWaiting() > 0:
     out += ser.read(ser.inWaiting())
   if out != '':
-    print out
+    print ">> " + toHexString(out)
+    print ">> " + out
 
 ### STATUS INFORMATION THAT XYZware polls periodically
 ser.write("XYZ_@3D:" + '\n')
@@ -43,6 +45,10 @@ with open(sys.argv[2], 'rb') as fin:
     gcode.append(0x00);
     gcode.append(0xB9); # some sort of checksum? how to calculate this?
     gcode.append('.');
-    # print ' '.join(x.encode('hex') for x in str(gcode))
-    ser.write("M1:MyTest,711,0.3.16,EE1_OK,EE2_OK\n" + gcode)
+    gcode = "M1:MyTest,711,0.3.16,EE1_OK,EE2_OK" + gcode
+    print ' '.join(x.encode('hex') for x in str(gcode))
+    ser.write(gcode)
 printOutputIfAvailable()
+
+# while(True):
+#   printOutputIfAvailable()
